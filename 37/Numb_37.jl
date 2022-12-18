@@ -3,13 +3,13 @@ mutable struct Coordinates
     Y::Integer
 end
 mutable struct Side
-    dir::HorizonSide
-    bor::HorizonSide
+    dir::HorizonSide # направление движения робота
+    bor::HorizonSide # сторона границы
 end
 inverse(side)::HorizonSide = HorizonSide((Int(side) + 2) % 4)
 left(side)::HorizonSide = HorizonSide((Int(side) + 1) % 4)
 right(side)::HorizonSide = HorizonSide((Int(side) + 3) % 4)
-function step!(robot, dir, k::Coordinates)
+function step!(robot, dir, k::Coordinates) # ставит маркер и передвигает робота, при этом меняем координаты
     if dir == Nord
         k.Y += 1
     elseif dir == Ost
@@ -23,7 +23,7 @@ function step!(robot, dir, k::Coordinates)
     move!(robot, dir)
 end
 
-function find_border(robot)
+function find_border(robot) # находит границу
     for side in (Nord, Ost, Sud, West)
         if isborder(robot, side)
             return side
